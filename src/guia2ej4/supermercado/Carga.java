@@ -7,15 +7,15 @@ import javax.swing.JOptionPane;
  *
  * @author ferna
  */
-public class CargaView extends javax.swing.JInternalFrame {
+public class Carga extends javax.swing.JInternalFrame {
 
     private JButton botonAnterior = null;
 
-    public CargaView() {
+    public Carga() {
         initComponents();
         setTitle("Carga de Datos");
         cargarCombo();
-        datosPrueba();
+        
 
         editable(false);
 
@@ -176,6 +176,7 @@ public class CargaView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jtDescripcionActionPerformed
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
+    try{   
         if (jtCodigo.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe ingresar un codigo para buscar");
         } else {
@@ -198,6 +199,9 @@ public class CargaView extends javax.swing.JInternalFrame {
                 limpiarJT();
             }
         }
+    }catch(NumberFormatException nf){
+        JOptionPane.showMessageDialog(this, "El codigo ingresado es invalido");
+    }  
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAgregarActionPerformed
@@ -277,7 +281,7 @@ public class CargaView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
-       
+       this.dispose();
     }//GEN-LAST:event_jbSalirActionPerformed
 
 
@@ -309,11 +313,7 @@ public class CargaView extends javax.swing.JInternalFrame {
         }
     }
 
-    private void datosPrueba() {
-        Desktop.listaProductos.add(new Producto(01, "prueba", 1, 1, Categoria.Perfumeria));
-        Desktop.listaProductos.add(new Producto(02, "prueba", 2, 10, Categoria.Limpieza));
-        Desktop.listaProductos.add(new Producto(03, "prueba", 3, 32, Categoria.Comestibles));
-    }
+    
 
     private void cargarDato(Producto producto) {
         Desktop.listaProductos.add(producto);
@@ -333,12 +333,13 @@ public class CargaView extends javax.swing.JInternalFrame {
         jtDescripcion.setText("");
         jtPrecio.setText("");
         jtStock.setText("");
+        jcbRubro.setEditable(false);
     }
 
     private void editable(boolean op) {
         jtDescripcion.setEditable(op);
         jtPrecio.setEditable(op);
         jtStock.setEditable(op);
-
+        
     }
 }

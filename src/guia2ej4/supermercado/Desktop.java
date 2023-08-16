@@ -13,6 +13,7 @@ public class Desktop extends javax.swing.JFrame {
     public Desktop() {
         initComponents();
         setTitle("DeTodo S.A.");
+        datosPrueba();
 
     }
 
@@ -139,7 +140,7 @@ public class Desktop extends javax.swing.JFrame {
     private void jMenuCargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuCargaActionPerformed
         Escritorio.removeAll();
         Escritorio.repaint();
-        CargaView Carga = new CargaView();
+        Carga Carga = new Carga();
         Carga.setVisible(true);
         Escritorio.add(Carga);
         Escritorio.moveToFront(Carga);
@@ -206,5 +207,9 @@ public class Desktop extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmPorPrecio;
     private javax.swing.JMenuItem jmPorRubro;
     // End of variables declaration//GEN-END:variables
-
+private void datosPrueba() {
+        Desktop.listaProductos.add(new Producto(01, "Jabon", 25000.25, 3, Categoria.Perfumeria));
+        Desktop.listaProductos.add(new Producto(02, "Detergente liquido", 600.25, 10, Categoria.Limpieza));
+        Desktop.listaProductos.add(new Producto(03, "Yerba", 3, 32, Categoria.Comestibles));
+    }
 }

@@ -1,25 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
+
 package guia2ej4.supermercado;
+
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ferna
  */
 public class PorNombre extends javax.swing.JInternalFrame {
 
-    private DefaultTableModel modelo = new DefaultTableModel(){
-      public boolean isCellEditable(int f, int c){
-          return false;
-      }  
+    /**
+     * Hace que la tabla no sea Editable
+     */
+    private DefaultTableModel modelo = new DefaultTableModel() {
+        public boolean isCellEditable(int f, int c) {
+            return false;
+        }
     };
+
     /**
      * Creates new form PorNombre
      */
     public PorNombre() {
         initComponents();
+        setTitle("Buscar Por Nombre");
+
+        cabecera();
     }
 
     /**
@@ -32,19 +38,24 @@ public class PorNombre extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jtbuscar = new javax.swing.JTextField();
+        jtBuscar = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtProducto = new javax.swing.JTable();
 
         jLabel1.setText("ingrese el nombre del producto:");
 
-        jtbuscar.addActionListener(new java.awt.event.ActionListener() {
+        jtBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtbuscarActionPerformed(evt);
+                jtBuscarActionPerformed(evt);
+            }
+        });
+        jtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtBuscarKeyReleased(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtProducto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -55,7 +66,7 @@ public class PorNombre extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jtProducto);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -68,7 +79,7 @@ public class PorNombre extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtbuscar)))
+                        .addComponent(jtBuscar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -76,7 +87,7 @@ public class PorNombre extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jtbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
                 .addContainerGap())
@@ -85,18 +96,43 @@ public class PorNombre extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jtbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbuscarActionPerformed
+    private void jtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtBuscarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jtbuscarActionPerformed
+    }//GEN-LAST:event_jtBuscarActionPerformed
+
+    private void jtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtBuscarKeyReleased
+        limpiarFila();
+        for (Producto prod : Desktop.listaProductos) {
+            if (prod.getDescripcion().toLowerCase().startsWith(jtBuscar.getText().toLowerCase())) {
+                modelo.addRow(new Object[]{
+                    prod.getCodigo(),
+                    prod.getDescripcion(),
+                    prod.getPrecio(),
+                    prod.getStock()
+                });
+            }
+        }
+    }//GEN-LAST:event_jtBuscarKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jtbuscar;
+    private javax.swing.JTextField jtBuscar;
+    private javax.swing.JTable jtProducto;
     // End of variables declaration//GEN-END:variables
-private void lista(){
-    
-}
+private void cabecera() {
+        modelo.addColumn("Codigo");
+        modelo.addColumn("Descripcion");
+        modelo.addColumn("Precio");
+        modelo.addColumn("Stock");
+        jtProducto.setModel(modelo);
+    }
+
+ private void limpiarFila() {
+        int f = modelo.getRowCount() -1;
+        for (; f >= 0; f--) {
+            modelo.removeRow(f);
+        }
+    }
 }
