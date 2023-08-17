@@ -15,7 +15,7 @@ public class Carga extends javax.swing.JInternalFrame {
         initComponents();
         setTitle("Carga de Datos");
         cargarCombo();
-        
+        jbEliminar.setEnabled(false);
 
         editable(false);
 
@@ -176,32 +176,33 @@ public class Carga extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jtDescripcionActionPerformed
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
-    try{   
-        if (jtCodigo.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un codigo para buscar");
-        } else {
-            int cod = Integer.parseInt(jtCodigo.getText());
-            boolean encontrado = true;
+        try {
+            if (jtCodigo.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe ingresar un codigo para buscar");
+            } else {
+                int cod = Integer.parseInt(jtCodigo.getText());
+                boolean encontrado = true;
 
-            for (Producto pro : Desktop.listaProductos) {
-                if (pro.getCodigo() == cod) {
-                    jtDescripcion.setText(pro.getDescripcion());
-                    jtPrecio.setText("$ " + pro.getPrecio());
-                    jtStock.setText(pro.getStock() + " u");
-                    jcbRubro.setSelectedItem(pro.getCategoria());
-                    encontrado = false;
-                    botonAnterior = jbBuscar;
-                    break;
+                for (Producto pro : Desktop.listaProductos) {
+                    if (pro.getCodigo() == cod) {
+                        jtDescripcion.setText(pro.getDescripcion());
+                        jtPrecio.setText("$ " + pro.getPrecio());
+                        jtStock.setText(pro.getStock() + " u");
+                        jcbRubro.setSelectedItem(pro.getCategoria());
+                        encontrado = false;
+                        botonAnterior = jbBuscar;
+                        jbEliminar.setEnabled(true);
+                        break;
+                    }
+                }
+                if (encontrado) {
+                    JOptionPane.showMessageDialog(this, "El codigo - " + cod + " - no existe");
+                    limpiarJT();
                 }
             }
-            if (encontrado) {
-                JOptionPane.showMessageDialog(this, "El codigo - " + cod + " - no existe");
-                limpiarJT();
-            }
+        } catch (NumberFormatException nf) {
+            JOptionPane.showMessageDialog(this, "El codigo ingresado es invalido");
         }
-    }catch(NumberFormatException nf){
-        JOptionPane.showMessageDialog(this, "El codigo ingresado es invalido");
-    }  
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAgregarActionPerformed
@@ -228,7 +229,12 @@ public class Carga extends javax.swing.JInternalFrame {
                 );
 
                 if (choice == JOptionPane.YES_OPTION) {
-                    Producto nuevo = new Producto(cod, Descripcion, precio, stock, (Categoria) jcbRubro.getSelectedItem());
+                    Producto nuevo = new Producto(cod,
+                            Descripcion,
+                            precio,
+                            stock,
+                            (Categoria) jcbRubro.getSelectedItem());
+
                     Desktop.listaProductos.add(nuevo);
                     limpiarJT();
                     editable(false);
@@ -253,35 +259,36 @@ public class Carga extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
-         if (botonAnterior.equals(jbBuscar)) {
+        if (botonAnterior.equals(jbBuscar)) {
             int num = Integer.parseInt(jtCodigo.getText());
-             for (Producto producto : Desktop.listaProductos) {
-                 if(producto.getCodigo()== num){
-                     Object[] options = {"YEA", "No"};
-                     int choice =JOptionPane.showOptionDialog(this,
-                             "esta Seguro que desea eliminar el elemento seleccionado",
-                             "Confirmacion",
-                             JOptionPane.YES_NO_OPTION,
-                             JOptionPane.QUESTION_MESSAGE,
-                             frameIcon,
-                             options, options[1]);
-                     if(choice == JOptionPane.YES_OPTION){
-                          Desktop.listaProductos.remove(producto);
-                          limpiarJT();
-                           JOptionPane.showMessageDialog(this, "El Producto se elimino Correctamente");
-                     }else if(choice == JOptionPane.NO_OPTION){
-                         JOptionPane.showMessageDialog(this, "no se Ha eliminado el Producto Seleccionado");
-                     }
-                    
-                 }
-             }
-        }else{
-             JOptionPane.showMessageDialog(this, "Debe buscar el producto por el codigo primero");
-         }
+            for (Producto producto : Desktop.listaProductos) {
+                if (producto.getCodigo() == num) {
+                    Object[] options = {"YEA", "No"};
+                    int choice = JOptionPane.showOptionDialog(this,
+                            "esta Seguro que desea eliminar el elemento seleccionado",
+                            "Confirmacion",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            frameIcon,
+                            options, options[1]);
+                    if (choice == JOptionPane.YES_OPTION) {
+                        Desktop.listaProductos.remove(producto);
+                        limpiarJT();
+                        jbEliminar.setEnabled(false);
+                        JOptionPane.showMessageDialog(this, "El Producto se elimino Correctamente");
+                    } else if (choice == JOptionPane.NO_OPTION) {
+                        jbEliminar.setEnabled(false);
+                    }
+
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe buscar el producto por el codigo primero");
+        }
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
-       this.dispose();
+        this.dispose();
     }//GEN-LAST:event_jbSalirActionPerformed
 
 
@@ -313,8 +320,6 @@ public class Carga extends javax.swing.JInternalFrame {
         }
     }
 
-    
-
     private void cargarDato(Producto producto) {
         Desktop.listaProductos.add(producto);
     }
@@ -340,6 +345,6 @@ public class Carga extends javax.swing.JInternalFrame {
         jtDescripcion.setEditable(op);
         jtPrecio.setEditable(op);
         jtStock.setEditable(op);
-        
+
     }
 }

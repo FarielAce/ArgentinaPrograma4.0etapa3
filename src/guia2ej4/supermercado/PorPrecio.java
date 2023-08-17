@@ -4,6 +4,8 @@
  */
 package guia2ej4.supermercado;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ferna
@@ -13,8 +15,20 @@ public class PorPrecio extends javax.swing.JInternalFrame {
     /**
      * Creates new form PorPrecio
      */
+    private DefaultTableModel modelo = new DefaultTableModel() {
+        public boolean isCellEditable(int f, int c) {
+            return false;
+        }
+    };
+    private double min = 0;
+    private double max = Double.MAX_VALUE;
+
     public PorPrecio() {
         initComponents();
+        setTitle("Cosulta por Precio");
+        cabecera();
+        busca(min, max);
+
     }
 
     /**
@@ -26,54 +40,142 @@ public class PorPrecio extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        jtMin = new javax.swing.JTextField();
+        jtMax = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtProductos = new javax.swing.JTable();
 
-        jTextField1.setText("jTextField1");
+        jtMin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtMinActionPerformed(evt);
+            }
+        });
+        jtMin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtMinKeyReleased(evt);
+            }
+        });
 
-        jTextField2.setText("jTextField2");
+        jtMax.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtMaxKeyReleased(evt);
+            }
+        });
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setText("y");
 
-        jLabel2.setText("jLabel2");
+        jLabel2.setText("Entre $:");
+
+        jtProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jtProductos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(67, 67, 67)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
+                .addComponent(jtMin, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addComponent(jtMax, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
-                .addContainerGap(229, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 27, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jtMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtMinActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtMinActionPerformed
+
+    private void jtMinKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtMinKeyReleased
+        limpiarFila();
+        if(jtMin.getText().isEmpty()){
+            min = 0;
+        }else{
+        min = Double.parseDouble(jtMin.getText());
+        }
+        busca(min, max);
+
+    }//GEN-LAST:event_jtMinKeyReleased
+
+    private void jtMaxKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtMaxKeyReleased
+        limpiarFila();
+        if(jtMax.getText().isEmpty()){ //si borra todos los digitos retorna el valor mas grande
+            max = Double.MAX_VALUE;
+        }else{
+        max = Double.parseDouble(jtMax.getText());
+        }
+        busca(min, max);
+
+    }//GEN-LAST:event_jtMaxKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jtMax;
+    private javax.swing.JTextField jtMin;
+    private javax.swing.JTable jtProductos;
     // End of variables declaration//GEN-END:variables
+    private void cabecera() {
+        modelo.addColumn("Codigo");
+        modelo.addColumn("Descripcion");
+        modelo.addColumn("Precio");
+        modelo.addColumn("Stock");
+        jtProductos.setModel(modelo);
+    }
+
+    private void limpiarFila() {
+        int f = modelo.getRowCount() - 1;
+        for (; f >= 0; f--) {
+            modelo.removeRow(f);
+        }
+    }
+    
+    private void busca(double a, double b){
+        
+        for (Producto producto : Desktop.listaProductos) {
+            if (producto.getPrecio() > a && producto.getPrecio() < b) {
+                modelo.addRow(new Object[]{
+                    producto.getCodigo(),
+                    producto.getDescripcion(),
+                    producto.getPrecio(),
+                    producto.getStock(),
+                    producto.getCategoria()
+                });
+            }
+        }
+    }
 }
