@@ -62,6 +62,7 @@ public class Carga extends javax.swing.JInternalFrame {
             }
         });
 
+        jbBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/guia2ej4/supermercado/LUPA.png"))); // NOI18N
         jbBuscar.setText("Buscar");
         jbBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,7 +78,6 @@ public class Carga extends javax.swing.JInternalFrame {
         });
 
         jbAgregar.setText("Agregar");
-        jbAgregar.setActionCommand("Agregar");
         jbAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbAgregarActionPerformed(evt);
@@ -165,7 +165,7 @@ public class Carga extends javax.swing.JInternalFrame {
                     .addComponent(jbAgregar)
                     .addComponent(jbEliminar)
                     .addComponent(jbSalir))
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -218,7 +218,7 @@ public class Carga extends javax.swing.JInternalFrame {
                 //JOptionPane.showMessageDialog(this, "El Codigo "+ cod + " se agrego correctamente");
                 Object[] options = {"Sí", "No", "Cancelar"};
                 int choice = JOptionPane.showOptionDialog(
-                        null,
+                        this,
                         "¿Deseas guardar los cambios?",
                         "Confirmación",
                         JOptionPane.YES_NO_CANCEL_OPTION,
@@ -263,7 +263,7 @@ public class Carga extends javax.swing.JInternalFrame {
             int num = Integer.parseInt(jtCodigo.getText());
             for (Producto producto : Desktop.listaProductos) {
                 if (producto.getCodigo() == num) {
-                    Object[] options = {"YEA", "No"};
+                    Object[] options = {"Si", "No"};
                     int choice = JOptionPane.showOptionDialog(this,
                             "esta Seguro que desea eliminar el elemento seleccionado",
                             "Confirmacion",
