@@ -1,4 +1,3 @@
-
 package Main;
 
 /**
@@ -6,14 +5,25 @@ package Main;
  * @author fernando
  */
 public class Tarea implements Comparable{
+
     private String nombre;
     private String descripcion;
-    private Estado estado;
+    private boolean completada;
+    private boolean eliminado;
 
-    public Tarea(String nombre, String descripcion, Estado enCurso) {
+    public Tarea(String nombre, String descripcion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.estado = enCurso;
+        completada = false;
+        eliminado = false;
+    }
+
+    public boolean isEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
     }
 
     public String getNombre() {
@@ -32,27 +42,22 @@ public class Tarea implements Comparable{
         this.descripcion = descripcion;
     }
 
-    public Estado getEstado() {
-        return estado;
+    public boolean isCompletada() {
+        return completada;
     }
 
-    public void setEstado(Estado estado) {
-        this.estado = estado;
+    public void setCompletada(boolean completada) {
+        this.completada = completada;
     }
 
     @Override
-    public int compareTo(Object T) {
-        Tarea t = (Tarea) T;
-   if(estado.equals(t.getEstado())){
-       return 0;
-   }else if (estado.equals(Estado.EnCurso)){
-       return -1;
-   }else{
-       return 1;
-   }
+    public int compareTo(Object t) {
+    Tarea Comp = (Tarea) t;
+        if ( completada && Comp.isCompletada()) {
+            return -1;
+        }else{
+            return 1;
+        }
     }
-
-    
-    
     
 }

@@ -19,6 +19,13 @@ public class Main extends javax.swing.JFrame {
         public boolean isCellEditable(int f, int c) {
             return false;
         }
+        Class[] types = new Class[]{
+            java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+        };
+
+        public Class getColumnClass(int columnIndex) {
+            return types[columnIndex];
+        }
     };
 
     /**
@@ -26,7 +33,9 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        setTitle("Organizador");
         armarCabecera();
+        demo();
     }
 
     /**
@@ -38,6 +47,7 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -47,6 +57,10 @@ public class Main extends javax.swing.JFrame {
         jbAgregar = new javax.swing.JButton();
         jbEliminar = new javax.swing.JButton();
         jbCompletado = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jmCompletadas = new javax.swing.JMenuItem();
+        jmEliminadas = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,15 +70,20 @@ public class Main extends javax.swing.JFrame {
 
         jtbTareas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nombre", "Descripcion", "Completado"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jtbTareas);
 
         jbAgregar.setText("Agregar");
@@ -87,6 +106,28 @@ public class Main extends javax.swing.JFrame {
                 jbCompletadoActionPerformed(evt);
             }
         });
+
+        jMenu1.setText("Tareas");
+
+        jmCompletadas.setText("Completadas");
+        jmCompletadas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmCompletadasActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jmCompletadas);
+
+        jmEliminadas.setText("Eliminadas");
+        jmEliminadas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmEliminadasActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jmEliminadas);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -139,33 +180,79 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAgregarActionPerformed
-        String Nombre = jtNombre.getText();
-        String Descripcion = jtDescripcion.getText();
-        Tarea nueva = new Tarea(Nombre, Descripcion, Estado.EnCurso);
-        listaTareas.add(nueva);
-        modelo.addRow(new Object[]
-        {
-            nueva.getNombre(),
-            nueva.getDescripcion(),
-            nueva.getEstado()
-        });
-    
+        String Descripcion;
+        if (jtNombre.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "El nombre es obligatorio",
+                    "Error",
+                    HEIGHT);
+        } else {
+            if (jtDescripcion.getText().isEmpty()) {
+                Descripcion = "";
+            } else {
+                Descripcion = jtDescripcion.getText();
+            }
+            String Nombre = jtNombre.getText();
+
+            Tarea nueva = new Tarea(Nombre, Descripcion);
+
+            modelo.addRow(new Object[]{
+                nueva.getNombre(),
+                nueva.getDescripcion(),
+                nueva.isCompletada(),});
+            limpiarJt();
+            listaTareas.add(nueva);
+        }
     }//GEN-LAST:event_jbAgregarActionPerformed
 
     private void jbCompletadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCompletadoActionPerformed
-   
+        int filaS = jtbTareas.getSelectedRow();
+        if (filaS == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una tarea");
+        } else {
+            String nombre = (String) modelo.getValueAt(filaS, 0);
+            String descripcion = (String) modelo.getValueAt(filaS, 1);
+            boolean estado = (boolean) modelo.getValueAt(filaS, 2);
+            for (Tarea tar : listaTareas) {
+                if (nombre.equalsIgnoreCase(tar.getNombre()) && descripcion.equals(tar.getDescripcion()) && !estado) {
+                    tar.setCompletada(true);
+                    modelo.setValueAt(true, filaS, 2);
+                }
+            }
+
+        }
+
     }//GEN-LAST:event_jbCompletadoActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
-    int filaS = jtbTareas.getSelectedRow();
-        
-        if (filaS != -1){
-           //jtbTareas.remove(filaS);
+        int filaS = jtbTareas.getSelectedRow();
+
+        if (filaS != -1) {
+
+            String nombre = (String) modelo.getValueAt(filaS, 0);
+            String descripcion = (String) modelo.getValueAt(filaS, 1);
+            boolean estado = (boolean) modelo.getValueAt(filaS, 2);
+            for (Tarea tar : listaTareas) {
+                if (nombre.equalsIgnoreCase(tar.getNombre()) && descripcion.equals(tar.getDescripcion())) {
+                    tar.setEliminado(true);
+
+                }
+            }
             modelo.removeRow(filaS);
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "No Hay Tarea seleccionada");
         }
     }//GEN-LAST:event_jbEliminarActionPerformed
+
+    private void jmCompletadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmCompletadasActionPerformed
+        new listaCompletados().setVisible(true);
+
+    }//GEN-LAST:event_jmCompletadasActionPerformed
+
+    private void jmEliminadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmEliminadasActionPerformed
+        new listaEliminados().setVisible(true);
+
+    }//GEN-LAST:event_jmEliminadasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,12 +290,17 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbAgregar;
     private javax.swing.JButton jbCompletado;
     private javax.swing.JButton jbEliminar;
+    private javax.swing.JMenuItem jmCompletadas;
+    private javax.swing.JMenuItem jmEliminadas;
     private javax.swing.JTextField jtDescripcion;
     private javax.swing.JTextField jtNombre;
     private javax.swing.JTable jtbTareas;
@@ -216,8 +308,28 @@ public class Main extends javax.swing.JFrame {
 private void armarCabecera() {
         modelo.addColumn("Nombre");
         modelo.addColumn("Descripcion");
-        modelo.addColumn("Estado");
+        modelo.addColumn("Completada");
         jtbTareas.setModel(modelo);
     }
 
+    private void limpiarJt() {
+        jtNombre.setText("");
+        jtDescripcion.setText("");
+
+    }
+
+    private void demo() {
+        listaTareas.add(new Tarea("test1", "carga de prueba"));
+        listaTareas.add(new Tarea("test2", "carga de prueba"));
+        listaTareas.add(new Tarea("test3", "carga de prueba"));
+        listaTareas.add(new Tarea("test4", "carga de prueba"));
+        for (Tarea tarea : listaTareas) {
+
+            modelo.addRow(new Object[]{tarea.getNombre(),
+                    tarea.getDescripcion()
+                    , tarea.isCompletada()
+            });
+
+        }
+    }
 }
