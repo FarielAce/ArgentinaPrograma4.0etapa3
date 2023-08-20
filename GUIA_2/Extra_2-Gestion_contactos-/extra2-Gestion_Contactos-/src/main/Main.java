@@ -1,20 +1,59 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package main;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.util.LinkedList;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 /**
- *
- * @author ferna
+ * @author Fernando Ariel Acevedo Ejercicio extra 2 de la guia 2 interface
+ * Grafica Gestion de Contactos
  */
 public class Main extends javax.swing.JFrame {
 
     /**
      * Creates new form Main
      */
+    /**Crea un modelo estandar con el cual se cargan las cabeceras y los datos
+     * a la JTable
+     */
+    private DefaultTableModel modelo = new DefaultTableModel() {
+        public boolean isCellEditable(int f, int c) {
+            return false;
+        }
+        //acomoda el tipo dato que va a tener cada celda. al definirla como boolean
+        //se convierte en una casilla de verificacion(CheckBox)
+        Class[] types = new Class[]{
+            java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+        };
+
+        public Class getColumnClass(int columnIndex) {
+            return types[columnIndex];
+        }
+    };
+    /**
+        Sobreescribe el metodo getIconImage para poder cargar el icono en la barra de titulo
+        despues se selecciona de las propiedades del JFrame.-
+    */
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().
+                getImage(ClassLoader.getSystemResource("recursos/iconoPrincipal.png"));
+
+        return retValue;
+    }
+    //crea una Linked list para permitir organizar los datos;
+    public LinkedList<Contacto> listaContactos = new LinkedList(); 
     public Main() {
         initComponents();
+        setTitle("Contactos");       //coloca el titulo de la ventana
+         setLocationRelativeTo(null); //hacen que la ventana aparezca centrada
+        setLocationByPlatform(true);   //hacen que la ventana aparezca centrada
+     
+        cargarCabecera();
+        organizaCabecera();
+
     }
 
     /**
@@ -26,33 +65,77 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtbPrincipal = new javax.swing.JTable();
+        jbAgregar = new javax.swing.JButton();
+        jbEliminar = new javax.swing.JButton();
+        jbEditar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
+        setResizable(false);
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        jtbPrincipal.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jtbPrincipal);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        jbAgregar.setText("Agregar");
+        jbAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbAgregarActionPerformed(evt);
+            }
+        });
 
-        setJMenuBar(jMenuBar1);
+        jbEliminar.setText("Eliminar");
+
+        jbEditar.setText("Editar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jbAgregar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbEditar)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbAgregar)
+                    .addComponent(jbEliminar)
+                    .addComponent(jbEditar))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAgregarActionPerformed
+   
+        
+    }//GEN-LAST:event_jbAgregarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -84,14 +167,38 @@ public class Main extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+
                 new Main().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbAgregar;
+    private javax.swing.JButton jbEditar;
+    private javax.swing.JButton jbEliminar;
+    private javax.swing.JTable jtbPrincipal;
     // End of variables declaration//GEN-END:variables
+    /** Carga los nombres de la cabecera de la JTable 
+     * 
+     */
+    private void cargarCabecera() {
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellido");
+        modelo.addColumn("telefono");
+        modelo.addColumn("Correo Electronico");
+        jtbPrincipal.setModel(modelo);
+    }
+    /**
+     * metodo para que se pueda organizar la tabla de acuerdo al contenido.
+     */
+    public void organizaCabecera() {
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+        jtbPrincipal.setRowSorter(sorter);
+    }
+    
+    public void actualizaLista(){
+        
+    }
 }
