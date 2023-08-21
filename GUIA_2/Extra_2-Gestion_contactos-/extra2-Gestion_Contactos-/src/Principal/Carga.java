@@ -4,6 +4,8 @@
  */
 package Principal;
 
+import static Principal.Main.Contactos;
+import static Principal.Main.modelo;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
@@ -14,15 +16,18 @@ import javax.swing.JOptionPane;
  * @author fernando
  */
 public class Carga extends javax.swing.JDialog {
-    private Main mainFrame;
+    
   
-    public Carga(java.awt.Frame parent, boolean modal, Main main) {
+    public Carga(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        mainFrame = main;
-        addWindowListener(new WindowAdapter() {
+        
+        addWindowListener(new WindowAdapter() { //captura el cierre
             @Override
             public void windowClosed(WindowEvent e) {
-                mainFrame.actualizaLista();
+            /*
+                cuando se cierra la ventana se ejecuta el codigo que se encuentra aqui dentro;
+            */
+            
             }
         });
         initComponents();
@@ -162,9 +167,10 @@ public class Carga extends javax.swing.JDialog {
                 );
 
                 if (choice == JOptionPane.YES_OPTION) {
-                    cargaDato(nuevo);
+                    Main.Contactos.agregaContacto(nuevo);
                     JOptionPane.showMessageDialog(this, "Agregado Correctamente");
                     limpiarJT();
+                    actualizaTabla();
                     dispose();
                 } else if (choice == JOptionPane.NO_OPTION) {
                     JOptionPane.showMessageDialog(this, "No se guardaron los cambios");
@@ -198,5 +204,16 @@ private void limpiarJT(){
     jtApellido.setText("");
     jtCelular.setText("");
     jtMail.setText("");
+}
+private void actualizaTabla(){
+     modelo.setRowCount(0);                          //limpia la tabla
+        for (Contacto contacto : Contactos.getLista()) {  // cargatodos los datos de la lista en la JTable
+            modelo.addRow(new Object[]{
+                contacto.getNombre(),
+                contacto.getApellido(),
+                contacto.getNumero(),
+                contacto.geteMail()
+            });
+        }
 }
 }
