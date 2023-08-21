@@ -2,23 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package main;
+package Principal;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
+
 
 /**
  *
  * @author fernando
  */
 public class Carga extends javax.swing.JDialog {
-
     private Main mainFrame;
-    
-    public Carga(java.awt.Frame parent, boolean modal) {
+  
+    public Carga(java.awt.Frame parent, boolean modal, Main main) {
         super(parent, modal);
-        
+        mainFrame = main;
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -147,10 +147,9 @@ public class Carga extends javax.swing.JDialog {
         String apellido = jtApellido.getText();
         int cel = Integer.parseInt(jtCelular.getText());
         String email = jtMail.getText();
-        }catch(NumberFormatException nf){
-                JOptionPane.showMessageDialog(this, "El celular solo puede ponerse Numeros");
-        }
-        J Object[] options = {"Sí", "No", "Cancelar"};
+        Contacto nuevo = new Contacto(nombre, apellido, cel, email);
+        
+         Object[] options = {"Sí", "No", "Cancelar"};
                 int choice = JOptionPane.showOptionDialog(
                         this,
                         "¿Deseas guardar los cambios?",
@@ -163,62 +162,25 @@ public class Carga extends javax.swing.JDialog {
                 );
 
                 if (choice == JOptionPane.YES_OPTION) {
-                    Contacto nuevo = new Contacto(nombre, apellido, cel, email);
-                    mainFrame.cargaDato(nuevo);
+                    cargaDato(nuevo);
                     JOptionPane.showMessageDialog(this, "Agregado Correctamente");
                     limpiarJT();
+                    dispose();
                 } else if (choice == JOptionPane.NO_OPTION) {
                     JOptionPane.showMessageDialog(this, "No se guardaron los cambios");
                 } else if (choice == JOptionPane.CANCEL_OPTION || choice == JOptionPane.CLOSED_OPTION) {
                     JOptionPane.showMessageDialog(this, "Operacion Cancelada");
                     limpiarJT();
-        
-        
-        
+                }
+        }catch(NumberFormatException nf){
+                JOptionPane.showMessageDialog(this, "El celular solo puede ponerse Numeros");
+        }
     }//GEN-LAST:event_jbAgregarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Carga.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Carga.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Carga.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Carga.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Carga dialog;
-                dialog = new Carga(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -233,6 +195,8 @@ public class Carga extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 private void limpiarJT(){
     jtNombre.setText("");
-    jtApellido.setText
+    jtApellido.setText("");
+    jtCelular.setText("");
+    jtMail.setText("");
 }
 }

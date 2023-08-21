@@ -1,4 +1,4 @@
-package main;
+package Principal;
 
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -15,6 +15,7 @@ public class Main extends javax.swing.JFrame {
     /**
      * Creates new form Main
      */
+    Main mainFrame;
     /**
      * Crea un modelo estandar con el cual se cargan las cabeceras y los datos a
      * la JTable
@@ -33,6 +34,7 @@ public class Main extends javax.swing.JFrame {
             return types[columnIndex];
         }
     };
+   
 
     /**
      * Sobreescribe el metodo getIconImage para poder cargar el icono en la
@@ -49,11 +51,9 @@ public class Main extends javax.swing.JFrame {
     public LinkedList<Contacto> listaContactos = new LinkedList();
 
     public Main() {
+        
         initComponents();
         setTitle("Contactos");       //coloca el titulo de la ventana
-        setLocationRelativeTo(null); //hacen que la ventana aparezca centrada
-        setLocationByPlatform(true);   //hacen que la ventana aparezca centrada
-
         cargarCabecera();
         organizaCabecera();
 
@@ -136,47 +136,12 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAgregarActionPerformed
-        Carga nuevo = new Carga(this, rootPaneCheckingEnabled);
+        
+        Carga nuevo = new Carga(this, rootPaneCheckingEnabled, mainFrame);
         nuevo.setVisible(rootPaneCheckingEnabled);
 
     }//GEN-LAST:event_jbAgregarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Main mainframe = new Main();
-                mainframe.setVisible(true);
-
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
