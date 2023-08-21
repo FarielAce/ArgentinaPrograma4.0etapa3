@@ -15,8 +15,9 @@ public class Main extends javax.swing.JFrame {
     /**
      * Creates new form Main
      */
-    /**Crea un modelo estandar con el cual se cargan las cabeceras y los datos
-     * a la JTable
+    /**
+     * Crea un modelo estandar con el cual se cargan las cabeceras y los datos a
+     * la JTable
      */
     private DefaultTableModel modelo = new DefaultTableModel() {
         public boolean isCellEditable(int f, int c) {
@@ -32,25 +33,27 @@ public class Main extends javax.swing.JFrame {
             return types[columnIndex];
         }
     };
+
     /**
-        Sobreescribe el metodo getIconImage para poder cargar el icono en la barra de titulo
-        despues se selecciona de las propiedades del JFrame.-
-    */
+     * Sobreescribe el metodo getIconImage para poder cargar el icono en la
+     * barra de titulo despues se selecciona de las propiedades del JFrame.-
+     */
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
-                getImage(ClassLoader.getSystemResource("recursos/iconoPrincipal.png"));
+                getImage(ClassLoader.getSystemResource("recursos/IconoPrincipal.png"));
 
         return retValue;
     }
     //crea una Linked list para permitir organizar los datos;
-    public LinkedList<Contacto> listaContactos = new LinkedList(); 
+    public LinkedList<Contacto> listaContactos = new LinkedList();
+
     public Main() {
         initComponents();
         setTitle("Contactos");       //coloca el titulo de la ventana
-         setLocationRelativeTo(null); //hacen que la ventana aparezca centrada
+        setLocationRelativeTo(null); //hacen que la ventana aparezca centrada
         setLocationByPlatform(true);   //hacen que la ventana aparezca centrada
-     
+
         cargarCabecera();
         organizaCabecera();
 
@@ -133,8 +136,9 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAgregarActionPerformed
-   
-        
+        Carga nuevo = new Carga(this, rootPaneCheckingEnabled);
+        nuevo.setVisible(rootPaneCheckingEnabled);
+
     }//GEN-LAST:event_jbAgregarActionPerformed
 
     /**
@@ -167,8 +171,9 @@ public class Main extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                Main mainframe = new Main();
+                mainframe.setVisible(true);
 
-                new Main().setVisible(true);
             }
         });
     }
@@ -180,8 +185,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jbEliminar;
     private javax.swing.JTable jtbPrincipal;
     // End of variables declaration//GEN-END:variables
-    /** Carga los nombres de la cabecera de la JTable 
-     * 
+    /**
+     * Carga los nombres de la cabecera de la JTable
+     *
      */
     private void cargarCabecera() {
         modelo.addColumn("Nombre");
@@ -190,6 +196,7 @@ public class Main extends javax.swing.JFrame {
         modelo.addColumn("Correo Electronico");
         jtbPrincipal.setModel(modelo);
     }
+
     /**
      * metodo para que se pueda organizar la tabla de acuerdo al contenido.
      */
@@ -197,8 +204,25 @@ public class Main extends javax.swing.JFrame {
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
         jtbPrincipal.setRowSorter(sorter);
     }
-    
-    public void actualizaLista(){
-        
+
+    public void actualizaLista() {
+        for (Contacto contacto : listaContactos) {
+            modelo.addRow(new Object[]{
+                contacto.getNombre(),
+                contacto.getApellido(),
+                contacto.getNumero(),
+                contacto.geteMail()
+            });
+        }
+    }
+
+    public void cargaDato(Contacto contacto) {
+        listaContactos.add(contacto);
+        modelo.addRow(new Object[]{
+            contacto.getNombre(),
+            contacto.getApellido(),
+            contacto.getNumero(),
+            contacto.geteMail()
+        });
     }
 }
