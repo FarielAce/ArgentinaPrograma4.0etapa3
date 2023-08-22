@@ -3,6 +3,8 @@ package Principal;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.LinkedList;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.YES_OPTION;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -26,15 +28,14 @@ public class Main extends javax.swing.JFrame {
         }
         //acomoda el tipo dato que va a tener cada celda. al definirla como boolean
         //se convierte en una casilla de verificacion(CheckBox)
-//        Class[] types = new Class[]{
-//            java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-//        };
-//
-//        public Class getColumnClass(int columnIndex) {
-//            return types[columnIndex];
-//        }
+        Class[] types = new Class[]{
+            java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+        };
+
+        public Class getColumnClass(int columnIndex) {
+            return types[columnIndex];
+        }
     };
-   
 
     /**
      * Sobreescribe el metodo getIconImage para poder cargar el icono en la
@@ -48,11 +49,11 @@ public class Main extends javax.swing.JFrame {
         return retValue;
     }
     //creo un objeto tipo listaContactos para utilizar en todas las ventanas
-    
+
     public static listaContacto Contactos = new listaContacto();
 
     public Main() {
-        
+
         initComponents();
         setTitle("Contactos");       //coloca el titulo de la ventana
         cargarCabecera();
@@ -74,7 +75,7 @@ public class Main extends javax.swing.JFrame {
         jbEliminar = new javax.swing.JButton();
         jbEditar = new javax.swing.JButton();
         panelTabla = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
         jtbPrincipal = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -89,8 +90,18 @@ public class Main extends javax.swing.JFrame {
         });
 
         jbEliminar.setText("Eliminar");
+        jbEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEliminarActionPerformed(evt);
+            }
+        });
 
         jbEditar.setText("Editar");
+        jbEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEditarActionPerformed(evt);
+            }
+        });
 
         panelTabla.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
             public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
@@ -109,17 +120,19 @@ public class Main extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jtbPrincipal);
+        jScrollPane2.setViewportView(jtbPrincipal);
 
         javax.swing.GroupLayout panelTablaLayout = new javax.swing.GroupLayout(panelTabla);
         panelTabla.setLayout(panelTablaLayout);
         panelTablaLayout.setHorizontalGroup(
             panelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
         );
         panelTablaLayout.setVerticalGroup(
             panelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
+            .addGroup(panelTablaLayout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -155,19 +168,57 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAgregarActionPerformed
-        
+
         Carga nuevo = new Carga(this, rootPaneCheckingEnabled);
         nuevo.setVisible(rootPaneCheckingEnabled);
 
     }//GEN-LAST:event_jbAgregarActionPerformed
 
     private void panelTablaVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_panelTablaVetoableChange
-       actualizaTabla();
+        actualizaTabla();
     }//GEN-LAST:event_panelTablaVetoableChange
+
+    private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
+        int selected = jtbPrincipal.getSelectedRow();
+        if (selected == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un Contacto para eliminar");
+        } else {
+            String nombre = (String) modelo.getValueAt(selected, 0);
+            String apellido = (String) modelo.getValueAt(selected, 1);
+            int celular = (int) modelo.getValueAt(selected, 2);
+            String mail = (String) modelo.getValueAt(selected, 3);
+            for (Contacto contacto : Contactos.getLista()) {
+                if (nombre.equals(contacto.getNombre())
+                        && apellido.equals(contacto.getApellido())
+                        && celular == contacto.getNumero()
+                        && mail.equals(contacto.geteMail())) {
+                    int op = JOptionPane.showConfirmDialog(this,
+                            "Esta accion es permanente esta seguro de continuar",
+                            "Advertencia",
+                            JOptionPane.YES_NO_OPTION);
+                    if (op == YES_OPTION) {
+                        Contactos.eliminarContacto(contacto);
+                    }
+                    
+                }
+            }
+            actualizaTabla();
+        }
+    }//GEN-LAST:event_jbEliminarActionPerformed
+
+    private void jbEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditarActionPerformed
+        int selectedRow = jtbPrincipal.getSelectedRow();
+        if(selectedRow == -1){
+            JOptionPane.showMessageDialog(this, "Debe Selecccionar una fila para editar");
+        }else{
+        Editar jDiagEdit = new Editar(this, rootPaneCheckingEnabled, selectedRow);
+        jDiagEdit.setVisible(true);
+        }
+    }//GEN-LAST:event_jbEditarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jbAgregar;
     private javax.swing.JButton jbEditar;
     private javax.swing.JButton jbEliminar;
@@ -209,19 +260,21 @@ public class Main extends javax.swing.JFrame {
 
     public void cargaTabla(Contacto contacto) {
         //Contactos.agregaContacto(contacto); //Agrega el contacto al la Lista
-        modelo.addRow(new Object[]{              //Carga el contacto en la JTable
-            contacto.getNombre(),       
+        modelo.addRow(new Object[]{ //Carga el contacto en la JTable
+            contacto.getNombre(),
             contacto.getApellido(),
             contacto.getNumero(),
             contacto.geteMail()
         });
     }
-    
-    private void Demo(){
+
+    private void Demo() {
         Contactos.agregaContacto(new Contacto("fernando", "Galvan", 251255, "fg@gmail.com"));
         Contactos.agregaContacto(new Contacto("Cristian", "Sanchez", 44352345, "cs@gmail.com"));
         Contactos.agregaContacto(new Contacto("veronica", "Perez", 1234215, "vp@gmail.com"));
         Contactos.agregaContacto(new Contacto("alejandra", "Velazques", 142336262, "av@gmail.com"));
         actualizaTabla();
     }
+    
+    
 }

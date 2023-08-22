@@ -8,13 +8,13 @@ package Principal;
 public class Contacto {
     private String nombre;
     private String apellido;
-    private int numero;
+    private long numero;
     private String eMail;
 
     public Contacto() {
     }
 
-    public Contacto(String nombre, String apellido, int numero, String eMail) {
+    public Contacto(String nombre, String apellido, long numero, String eMail) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.numero = numero;
@@ -37,11 +37,11 @@ public class Contacto {
         this.apellido = apellido;
     }
 
-    public int getNumero() {
+    public long getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(long numero) {
         this.numero = numero;
     }
 

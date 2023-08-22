@@ -9,33 +9,34 @@ import static Principal.Main.modelo;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
-
+import static javax.swing.JOptionPane.CANCEL_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 
 /**
  *
  * @author fernando
  */
-public class Carga extends javax.swing.JDialog {
-    
-  
-    public Carga(java.awt.Frame parent, boolean modal) {
+public class Editar extends javax.swing.JDialog {
+
+    private int fila;
+
+    public Editar(java.awt.Frame parent, boolean modal, int fila) {
         super(parent, modal);
-        
+        this.fila = fila;
         addWindowListener(new WindowAdapter() { //captura el cierre
             @Override
             public void windowClosed(WindowEvent e) {
-            /*
+                /*
                 cuando se cierra la ventana se ejecuta el codigo que se encuentra aqui dentro;
-            */
-            
+                 */
+
             }
         });
         initComponents();
+        setTitle("Editar");
+        initJtexts(fila);
     }
 
-  
-
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -50,10 +51,10 @@ public class Carga extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jtNombre = new javax.swing.JTextField();
-        jtApellido = new javax.swing.JTextField();
-        jtCelular = new javax.swing.JTextField();
         jtMail = new javax.swing.JTextField();
-        jbAgregar = new javax.swing.JButton();
+        jbConfirma = new javax.swing.JButton();
+        jtApellido = new javax.swing.JTextField();
+        jtTelefono = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -77,12 +78,14 @@ public class Carga extends javax.swing.JDialog {
             }
         });
 
-        jbAgregar.setText("Agregar");
-        jbAgregar.addActionListener(new java.awt.event.ActionListener() {
+        jbConfirma.setText("Confirmar");
+        jbConfirma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbAgregarActionPerformed(evt);
+                jbConfirmaActionPerformed(evt);
             }
         });
+
+        jtTelefono.setText("jTextField1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -91,6 +94,9 @@ public class Carga extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jbConfirma))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabel1)
@@ -107,8 +113,7 @@ public class Carga extends javax.swing.JDialog {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jtMail)
-                                .addComponent(jtCelular))))
-                    .addComponent(jbAgregar))
+                                .addComponent(jtTelefono)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -125,14 +130,14 @@ public class Carga extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jtMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jbAgregar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jbConfirma)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pack();
@@ -146,66 +151,64 @@ public class Carga extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtMailActionPerformed
 
-    private void jbAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAgregarActionPerformed
-        try{
-        String nombre = jtNombre.getText();
-        String apellido = jtApellido.getText();
-        long cel = Long.parseLong(jtCelular.getText());
-        String email = jtMail.getText();
-        Contacto nuevo = new Contacto(nombre, apellido, cel, email);
+    private void jbConfirmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConfirmaActionPerformed
+            String nombre = (String) modelo.getValueAt(fila, 0); //carga en variables todos los datos para poder buscar en la lista el contacto
+            String apellido = (String) modelo.getValueAt(fila, 1);
+            long celular = (long) modelo.getValueAt(fila, 2);
+            String mail = (String) modelo.getValueAt(fila, 3);
+        for (Contacto contacto : Contactos.getLista()) {
+            if (nombre.equals(contacto.getNombre())
+                    && apellido.equals(contacto.getApellido())
+                    && celular == contacto.getNumero()
+                    && mail.equals(contacto.geteMail())) {
+                
+                int op = JOptionPane.showConfirmDialog(this,
+                        "Se actulizaran los datos del contacto seleccionado. ¿Desea Continuar?",
+                        "Advertencia",
+                        JOptionPane.YES_NO_CANCEL_OPTION);
+                if (op == YES_OPTION) {
+                   
         
-         Object[] options = {"Sí", "No", "Cancelar"};
-                int choice = JOptionPane.showOptionDialog(
-                        this,
-                        "¿Deseas guardar los cambios?",
-                        "Confirmación",
-                        JOptionPane.YES_NO_CANCEL_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        options,
-                        options[0]
-                );
-
-                if (choice == JOptionPane.YES_OPTION) {
-                    Main.Contactos.agregaContacto(nuevo);
-                    JOptionPane.showMessageDialog(this, "Agregado Correctamente");
-                    limpiarJT();
+                   long numero = Long.parseLong(jtTelefono.getText());
+                    contacto.setNombre((String) jtNombre.getText());
+                    contacto.setApellido((String) jtApellido.getText());
+                    contacto.setNumero(numero);
+                    contacto.seteMail((String) jtMail.getText());
                     actualizaTabla();
                     dispose();
-                } else if (choice == JOptionPane.NO_OPTION) {
-                    JOptionPane.showMessageDialog(this, "No se guardaron los cambios");
-                } else if (choice == JOptionPane.CANCEL_OPTION || choice == JOptionPane.CLOSED_OPTION) {
-                    JOptionPane.showMessageDialog(this, "Operacion Cancelada");
-                    limpiarJT();
+                }else if(op == CANCEL_OPTION){
+                    dispose();
                 }
-        }catch(NumberFormatException nf){
-                JOptionPane.showMessageDialog(this, "El celular solo puede ponerse Numeros");
+
+            }
         }
-    }//GEN-LAST:event_jbAgregarActionPerformed
+        
+    }//GEN-LAST:event_jbConfirmaActionPerformed
 
     /**
      * @param args the command line arguments
      */
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JButton jbAgregar;
+    private javax.swing.JButton jbConfirma;
     private javax.swing.JTextField jtApellido;
-    private javax.swing.JTextField jtCelular;
     private javax.swing.JTextField jtMail;
     private javax.swing.JTextField jtNombre;
+    private javax.swing.JTextField jtTelefono;
     // End of variables declaration//GEN-END:variables
-private void limpiarJT(){
-    jtNombre.setText("");
-    jtApellido.setText("");
-    jtCelular.setText("");
-    jtMail.setText("");
-}
-private void actualizaTabla(){
+
+    private void initJtexts(int f) {
+
+        jtNombre.setText((String) modelo.getValueAt(f, 0));
+        jtApellido.setText((String) modelo.getValueAt(f, 1));
+        jtTelefono.setText((String) Long.toString((long) modelo.getValueAt(f, 2)));
+        jtMail.setText((String) modelo.getValueAt(f, 3));
+    }
+    private void actualizaTabla(){
      modelo.setRowCount(0);                          //limpia la tabla
         for (Contacto contacto : Contactos.getLista()) {  // cargatodos los datos de la lista en la JTable
             modelo.addRow(new Object[]{
