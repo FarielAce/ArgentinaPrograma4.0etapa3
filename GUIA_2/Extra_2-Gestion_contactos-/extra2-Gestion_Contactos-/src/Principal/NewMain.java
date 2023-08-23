@@ -18,7 +18,7 @@ public class NewMain {
         Main mainFrame = new Main();
         
         mainFrame.setVisible(true);
-        
+        mainFrame.setLocationRelativeTo(null);
     }
 
 }

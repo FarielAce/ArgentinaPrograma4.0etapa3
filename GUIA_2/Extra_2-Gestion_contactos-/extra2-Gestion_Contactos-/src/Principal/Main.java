@@ -170,7 +170,9 @@ public class Main extends javax.swing.JFrame {
     private void jbAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAgregarActionPerformed
 
         Carga nuevo = new Carga(this, rootPaneCheckingEnabled);
-        nuevo.setVisible(rootPaneCheckingEnabled);
+        nuevo.setLocationRelativeTo(null);
+        nuevo.setVisible(true);
+        
 
     }//GEN-LAST:event_jbAgregarActionPerformed
 
@@ -212,6 +214,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Debe Selecccionar una fila para editar");
         }else{
         Editar jDiagEdit = new Editar(this, rootPaneCheckingEnabled, selectedRow);
+        jDiagEdit.setLocationRelativeTo(null);
         jDiagEdit.setVisible(true);
         }
     }//GEN-LAST:event_jbEditarActionPerformed
