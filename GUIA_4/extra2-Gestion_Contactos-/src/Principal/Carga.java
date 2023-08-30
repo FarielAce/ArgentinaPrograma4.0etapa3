@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
+
 package Principal;
 
 import static Principal.Main.Contactos;
@@ -168,7 +165,7 @@ public class Carga extends javax.swing.JDialog {
 
                 if (choice == JOptionPane.YES_OPTION) {
                     Main.Contactos.agregaContacto(nuevo);
-                    JOptionPane.showMessageDialog(this, "Agregado Correctamente");
+                    //JOptionPane.showMessageDialog(this, "Agregado Correctamente");
                     limpiarJT();
                     actualizaTabla();
                     dispose();

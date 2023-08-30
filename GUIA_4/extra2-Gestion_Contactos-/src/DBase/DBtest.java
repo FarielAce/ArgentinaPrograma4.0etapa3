@@ -14,7 +14,7 @@ public class DBtest {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-         DBaseOperaciones databaseOperations = new DBaseOperaciones();
+         controlContacto databaseOperations = new controlContacto();
 
         // Insertar un nuevo contacto
         databaseOperations.insertContacto("Juan", "Pérez", 1234567890, "juan@example.com");

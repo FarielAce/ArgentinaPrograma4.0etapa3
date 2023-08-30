@@ -8,7 +8,7 @@ import java.sql.SQLException;
  *
  * @author fernando
  */
-public class ConexionBaseDatos {
+public class DBCon {
 
     private static final String URL = "jdbc:mysql://localhost:3306/testContacto";
     private static final String USER = "test"; // Cambiar por tu nombre de usuario

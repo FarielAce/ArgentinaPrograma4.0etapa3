@@ -6,6 +6,7 @@ package Principal;
  *  Clase contacto 
  */
 public class Contacto {
+    private int id;
     private String nombre;
     private String apellido;
     private long numero;
@@ -19,6 +20,22 @@ public class Contacto {
         this.apellido = apellido;
         this.numero = numero;
         this.eMail = eMail;
+    }
+
+    public Contacto(int id, String nombre, String apellido, long numero, String eMail) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.numero = numero;
+        this.eMail = eMail;
+    }
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {

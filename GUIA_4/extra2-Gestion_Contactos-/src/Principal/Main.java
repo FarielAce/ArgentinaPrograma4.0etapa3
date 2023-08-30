@@ -58,7 +58,7 @@ public class Main extends javax.swing.JFrame {
         setTitle("Contactos");       //coloca el titulo de la ventana
         cargarCabecera();
         organizaCabecera();
-        Demo();
+        actualizaTabla();
 
     }
 
@@ -270,14 +270,4 @@ public class Main extends javax.swing.JFrame {
             contacto.geteMail()
         });
     }
-
-    private void Demo() {
-        Contactos.agregaContacto(new Contacto("fernando", "Galvan", 251255, "fg@gmail.com"));
-        Contactos.agregaContacto(new Contacto("Cristian", "Sanchez", 44352345, "cs@gmail.com"));
-        Contactos.agregaContacto(new Contacto("veronica", "Perez", 1234215, "vp@gmail.com"));
-        Contactos.agregaContacto(new Contacto("alejandra", "Velazques", 142336262, "av@gmail.com"));
-        actualizaTabla();
-    }
-    
-    
 }

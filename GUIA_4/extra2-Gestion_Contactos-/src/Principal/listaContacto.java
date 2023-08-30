@@ -4,8 +4,8 @@
  */
 package Principal;
 
-import java.util.LinkedList;
-
+import java.util.ArrayList;
+import DBase.controlContacto;
 /** @author Fernando Ariel Acevedo
  *  Se Creo una Clase para la lista, de esta manera todos clases pueden acceder a la lista
  *  a travez de sus metodos de carga.
@@ -13,39 +13,37 @@ import java.util.LinkedList;
  */
 public class listaContacto {
 
-    LinkedList<Contacto> listaContactos;
+    controlContacto DBase;
 
     public listaContacto() {
-        listaContactos = new LinkedList();
+        DBase = new controlContacto();
     }
     public void agregaContacto(Contacto nuevo){
-            listaContactos.add(nuevo);
+            DBase.insertContacto(nuevo);
             }
     
     public void eliminarContacto(Contacto eliminar){
-        listaContactos.remove(eliminar);
+        DBase.deleteContacto(eliminar);
     }
     /**
      * Retorna un Vector con la totalidad de los elementos de la lista.-
      * @return 
      */
     public Contacto[] listarContactos(){
-        int tamaño = listaContactos.size();
+        int tamaño = DBase.selectContactos().size();
         Contacto[] lista = new Contacto[tamaño];
         for (int i = 0; i < tamaño; i++) {
-            lista[i]=listaContactos.get(i);
+            lista[i]=DBase.selectContactos().get(i);
         }
         return lista;
     }
-    public LinkedList<Contacto> getLista(){
-        return listaContactos;
+    public ArrayList<Contacto> getLista(){
+        return DBase.selectContactos();
     }
-    public LinkedList<Contacto> getListaContactos() {
-        return listaContactos;
+    public ArrayList<Contacto> getListaContactos() {
+        return DBase.selectContactos();
     }
 
-    public void setListaContactos(LinkedList<Contacto> listaContactos) {
-        this.listaContactos = listaContactos;
-    }
+    
 
 }
