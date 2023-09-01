@@ -4,6 +4,7 @@
  */
 package DBase;
 
+import javadb.DBCon;
 import Principal.Contacto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,15 +22,17 @@ import javax.swing.JOptionPane;
 public class controlContacto {
 
     private Connection conexion = null;
-
-    public controlContacto() {// el el constructor del control se inicializa la conexion 
+    /* a fin de evitar conexiones y cierre repetitivos opte por abrir la 
+        conexion en el constructor y cerrarla al finalizar el programa;
+    */
+    public controlContacto() {
         try {
             conexion = DBCon.getConnection();
         } catch (SQLException ex) {
             Logger.getLogger(controlContacto.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }
+    } 
 
     public void insertContacto(String nombre, String apellido, int celular, String email) {
         String query = "INSERT INTO Contactos (nombre, apellido, celular, email) VALUES (?, ?, ?, ?)";
@@ -42,9 +45,9 @@ public class controlContacto {
             sentencia.setString(4, email);
 
             sentencia.executeUpdate();
-            System.out.println("Registro insertado correctamente.");
+            //System.out.println("Registro insertado correctamente.");
         } catch (SQLException e) {
-            e.printStackTrace();
+             JOptionPane.showMessageDialog(null, "error de conexion con el servidor");
         }
     }
 
@@ -61,7 +64,7 @@ public class controlContacto {
             sentencia.executeUpdate();
             JOptionPane.showMessageDialog(null, "Contacto Agregado Correctamente");
         } catch (SQLException e) {
-            e.printStackTrace();
+              JOptionPane.showMessageDialog(null, "error de conexion con el servidor");
         }
 
     }
@@ -69,38 +72,61 @@ public class controlContacto {
     public void deleteContacto(Contacto eliminar) {
         String query = "DELETE FROM Contactos WHERE idTabla = ?";
         int id = eliminar.getId();
+        System.out.println("id = " + id);
         try {  
             PreparedStatement preparedStatement = conexion.prepareStatement(query);
             preparedStatement.setInt(1, id);
 
-            int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
+            int filaAfectada = preparedStatement.executeUpdate();
+            if (filaAfectada > 0) {
                JOptionPane.showMessageDialog(null, "Se elimino Correctamente");
             } else {
                 JOptionPane.showMessageDialog(null, "no se encontro contacto a eliminar");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+              JOptionPane.showMessageDialog(null, "error de conexion con el servidor");
         }
     }
-
+         /**Esta es otra manera de manejar las conexion con el servidor 
+         utilizando el bloque "try-with-resources", introducido en Java 7, que se 
+        encarga automáticamente de cerrar los recursos abiertos al finalizar el 
+        bloque try. Aquí, tanto la conexión (connection) como la sentencia preparada
+        (preparedStatement) se inicializan dentro del bloque try-with-resources. Una 
+        vez que el bloque try termina (ya sea normalmente o debido a una excepción), 
+        los recursos se cierran automáticamente sin necesidad de un bloque finally 
+        para realizar la limpieza manual
+        **/
     public ArrayList<Contacto> selectContactos() {
         ArrayList<Contacto> recuperado = new ArrayList();
         String query = "SELECT * FROM Contactos";
-
-        try (Connection connection = DBCon.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query); ResultSet resultSet = preparedStatement.executeQuery()) {
+          
+        try (Connection connection = DBCon.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query); 
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            
             while (resultSet.next()) {
                 int id = Integer.parseInt(resultSet.getString("idTabla"));
                 String nombre = resultSet.getString("nombre");
                 String apellido = resultSet.getString("apellido");
                 int celular = resultSet.getInt("celular");
                 String email = resultSet.getString("eMail");
+                
                 Contacto nuevo = new Contacto(id, nombre, apellido, celular, email);
                 recuperado.add(nuevo);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           JOptionPane.showMessageDialog(null, "error de conexion con el servidor");
         }
         return recuperado;
+    }
+    /* el siguiente metodo cierra la conexion con el servidor SQl 
+        
+    */
+    public void cerrarConexion(){
+        try {
+            conexion.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(controlContacto.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
