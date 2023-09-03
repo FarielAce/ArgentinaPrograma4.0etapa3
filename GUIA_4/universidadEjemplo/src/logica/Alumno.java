@@ -82,6 +82,11 @@ public class Alumno {
     public void setEstado(int estado) {
         this.estado = estado;
     }
+
+    @Override
+    public String toString() {
+        return "Alumno{" + "idAlumno=" + idAlumno + ", dni=" + dni + ", nombre=" + nombre + ", apellido=" + apellido + ", fechaNac=" + fechaNac + ", estado=" + estado + '}';
+    }
     
     
 }
