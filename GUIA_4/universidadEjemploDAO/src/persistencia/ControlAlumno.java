@@ -24,8 +24,7 @@ import javax.swing.JOptionPane;
 public final class ControlAlumno extends DAO{
 
     private String SQL;
-    private PreparedStatement ps;
-
+   
     public void agregarAlumno(Alumno nuevo) {
       //  Date fecha = Date.valueOf(nuevo.getFechaNac()); // se convierte de localDate a SQL date 
         SQL = "INSERT INTO `alumnos`(`dni`, `apellido`, `nombre`, `fechaNac`, `estado`) "
@@ -38,14 +37,17 @@ public final class ControlAlumno extends DAO{
             ps.setString(1, nuevo.getApellido());
             ps.setString(2, nuevo.getNombre());
             ps.setDate(3, Date.valueOf(nuevo.getFechaNac()));
-            ps.setInt(4, nuevo.getEstado());
+            ps.setBoolean(4, nuevo.isEstado());
             int estado = ps.executeUpdate();
+                     
             if (estado > 0) {
                 JOptionPane.showMessageDialog(null, "Se agrego correctamente al alumno");
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error de SQL" + ex);
 
+        }finally{
+        desconectar();
         }
 
     }
@@ -63,14 +65,16 @@ public final class ControlAlumno extends DAO{
             ps.setString(2, editado.getApellido());
             ps.setString(3, editado.getNombre());
             ps.setDate(4, Date.valueOf(editado.getFechaNac()));
-            ps.setInt(5, editado.getEstado());
+            ps.setBoolean(5, editado.isEstado());
 
-            int resultado = ps.executeUpdate();
-            if (resultado > 0) {
+            int resul = ps.executeUpdate();
+            if (resul > 0) {
                 JOptionPane.showMessageDialog(null, "se ha editado correctamente");
             }
         } catch (SQLException ex) {
             Logger.getLogger(ControlAlumno.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+        desconectar();
         }
 
     }
@@ -88,7 +92,7 @@ public final class ControlAlumno extends DAO{
             String nombre = resultado.getString("nombre");
             String apellido = resultado.getString("apellido");
             LocalDate fechaNac = resultado.getDate("fechaNac").toLocalDate();
-            int estado = resultado.getInt("estado");
+            boolean estado = resultado.getBoolean("estado");
             encontrado = new Alumno(id, dni, nombre, apellido, fechaNac, estado);
         } catch (SQLException ex) {
             Logger.getLogger(ControlAlumno.class.getName()).log(Level.SEVERE, null, ex);
@@ -113,12 +117,14 @@ public final class ControlAlumno extends DAO{
                 String nombre = resultado.getString("nombre");
                 String apellido = resultado.getString("apellido");
                 LocalDate fechaNac = resultado.getDate("fechaNac").toLocalDate();
-                int estado = resultado.getInt("estado");
+                boolean estado = resultado.getBoolean("estado");
                 Alumno encontrado = new Alumno(id, dni, nombre, apellido, fechaNac, estado);
                 listaAlumnos.add(encontrado);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ControlAlumno.class.getName()).log(Level.SEVERE, null, ex);
+        } finally{
+        desconectar();
         }
         return listaAlumnos;
     }

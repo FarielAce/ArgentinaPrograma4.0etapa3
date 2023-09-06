@@ -16,8 +16,7 @@ import logica.Inscripcion;
  */
 public final class ControlInstripcion extends DAO{
     private String SQL;
-    private PreparedStatement ps;
-    
+        
     private void inscribir(Alumno alumno, Materia materia, int nota){
     int idAlu = alumno.getIdAlumno();
     int idMat = materia.getIdMateria();
@@ -61,7 +60,8 @@ public final class ControlInstripcion extends DAO{
     }
     private void editarInscripcion(Inscripcion editar){
         int idInscri = editar.getIdIscripcion();
-        int 
+        int idAlumno = editar.getAlumno().getIdAlumno();
+        int idMateria = editar.getMateria().getIdMateria();
         
     }
     private void borrarInscripcion(Inscripcion eliminar){

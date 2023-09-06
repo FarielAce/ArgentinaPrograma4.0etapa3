@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -20,9 +21,10 @@ import javax.swing.JOptionPane;
  */
 public abstract class DAO {
 
-    protected Connection conexion = null;
+    protected Connection conexion = null; //define variables generales
     protected ResultSet resultado = null;
     protected Statement sentencia = null;
+    protected PreparedStatement ps = null;
     private final String DRIVER = "com.mysql.cj.jdbc.Driver";  //"org.mariadb.jdbc.Driver" en caso de utilizar el de mariadb
     private final String URLS = "jdbc:mysql://192.168.10.6:3306/";
     private final String DATABASE = "universidadEjemplo";

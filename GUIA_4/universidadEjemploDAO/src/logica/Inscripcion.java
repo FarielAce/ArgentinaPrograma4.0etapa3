@@ -9,57 +9,63 @@ package logica;
  * @author fernando
  */
 public class Inscripcion {
-    private int idIscripcion;
-    private int idAlumno;
-    private int idMateria;
-    private int nota;
+    private int id;
+    private Alumno alumno;
+    private Materia materia;
+    private double nota;
 
     public Inscripcion() {
     }
 
-    public Inscripcion(int idIscripcion, int idAlumno, int idMateria, int nota) {
-        this.idIscripcion = idIscripcion;
-        this.idAlumno = idAlumno;
-        this.idMateria = idMateria;
+    public Inscripcion(int idIscripcion, Alumno alumno, Materia materia, double nota) {
+        this.id = idIscripcion;
+        this.alumno = alumno;
+        this.materia = materia;
         this.nota = nota;
     }
 
-    public Inscripcion(int idAlumno, int idMateria, int nota) {
-        this.idAlumno = idAlumno;
-        this.idMateria = idMateria;
+    public Inscripcion(Alumno alumno, Materia materia, int nota) {
+        this.alumno = alumno;
+        this.materia = materia;
         this.nota = nota;
     }
 
     public int getIdIscripcion() {
-        return idIscripcion;
+        return id;
     }
 
     public void setIdIscripcion(int idIscripcion) {
-        this.idIscripcion = idIscripcion;
+        this.id = idIscripcion;
     }
 
-    public int getIdAlumno() {
-        return idAlumno;
+    public Alumno getAlumno() {
+        return alumno;
     }
 
-    public void setIdAlumno(int idAlumno) {
-        this.idAlumno = idAlumno;
+    public void setAlumno(Alumno alumno) {
+        this.alumno = alumno;
     }
 
-    public int getIdMateria() {
-        return idMateria;
+    public Materia getMateria() {
+        return materia;
     }
 
-    public void setIdMateria(int idMateria) {
-        this.idMateria = idMateria;
+    public void setMateria(Materia materia) {
+        this.materia = materia;
     }
 
-    public int getNota() {
+    public double getNota() {
         return nota;
     }
 
-    public void setNota(int nota) {
+    public void setNota(double nota) {
         this.nota = nota;
     }
+
+    @Override
+    public String toString() {
+        return "Inscripcion{" + "idIscripcion=" + id + '}' + alumno.getApellido() + ", " + materia.getNombre();
+    }
+
     
 }

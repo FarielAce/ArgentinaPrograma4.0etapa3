@@ -263,7 +263,7 @@ public class Main extends javax.swing.JFrame {
 
     public void cargaTabla(Contacto contacto) {
         //Contactos.agregaContacto(contacto); //Agrega el contacto al la Lista
-        modelo.addRow(new Object[]{ //Carga el contacto en la JTable
+        modelo.addRow(new bOject[]{ //Carga el contacto en la JTable
             contacto.getNombre(),
             contacto.getApellido(),
             contacto.getNumero(),

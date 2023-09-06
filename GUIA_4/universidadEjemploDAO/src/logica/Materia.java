@@ -9,7 +9,7 @@ package logica;
  * @author fernando
  */
 public class Materia {
-    private int idMateria;
+    private int id;
     private String nombre;
     private int anio;
     private int estado;
@@ -24,18 +24,18 @@ public class Materia {
     }
 
     public Materia(int idMateria, String nombre, int anio, int estado) {
-        this.idMateria = idMateria;
+        this.id = idMateria;
         this.nombre = nombre;
         this.anio = anio;
         this.estado = estado;
     }
 
     public int getIdMateria() {
-        return idMateria;
+        return id;
     }
 
     public void setIdMateria(int idMateria) {
-        this.idMateria = idMateria;
+        this.id = idMateria;
     }
 
     public String getNombre() {

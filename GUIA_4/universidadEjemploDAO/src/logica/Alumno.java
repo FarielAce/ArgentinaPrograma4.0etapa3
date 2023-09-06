@@ -8,18 +8,18 @@ import java.time.LocalDate;
  * @author fernando
  */
 public class Alumno {
-    private int idAlumno;
+    private int id;
     private int dni;
     private String nombre;
     private String apellido;
     private LocalDate fechaNac;
-    private int estado;
+    private boolean estado;
 
     public Alumno() {
     }
 
-    public Alumno(int idAlumno, int dni, String nombre, String apellido, LocalDate fechaNac, int estado) {
-        this.idAlumno = idAlumno;
+    public Alumno(int idAlumno, int dni, String nombre, String apellido, LocalDate fechaNac, boolean estado) {
+        this.id = idAlumno;
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -27,7 +27,7 @@ public class Alumno {
         this.estado = estado;
     }
 
-    public Alumno(int dni, String nombre, String apellido, LocalDate fechaNac, int estado) {
+    public Alumno(int dni, String nombre, String apellido, LocalDate fechaNac, boolean estado) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -36,11 +36,11 @@ public class Alumno {
     }
 
     public int getIdAlumno() {
-        return idAlumno;
+        return id;
     }
 
     public void setIdAlumno(int idAlumno) {
-        this.idAlumno = idAlumno;
+        this.id = idAlumno;
     }
 
     public int getDni() {
@@ -75,17 +75,19 @@ public class Alumno {
         this.fechaNac = fechaNac;
     }
 
-    public int getEstado() {
+    public boolean isEstado() {
         return estado;
     }
 
-    public void setEstado(int estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
+ 
+
 
     @Override
     public String toString() {
-        return "Alumno{" + "idAlumno=" + idAlumno + ", dni=" + dni + ", nombre=" + nombre + ", apellido=" + apellido + ", fechaNac=" + fechaNac + ", estado=" + estado + '}';
+        return "Alumno{" + "idAlumno=" + id + ", dni=" + dni + ", nombre=" + nombre + ", apellido=" + apellido + ", fechaNac=" + fechaNac + ", estado=" + estado + '}';
     }
     
     
