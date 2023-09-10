@@ -14,7 +14,11 @@ import javax.swing.JOptionPane;
  * @author fernando
  */
 public class Conexion {
+<<<<<<< HEAD
     private static final String  URL = "jdbc:mysql://192.168.10.6:3306/universidadEjemplo";
+=======
+    private static final String URL = "jdbc:mysql://192.168.10.6:3306/universidadEjemplo";
+>>>>>>> c10bd868808a21543a4ea8d3434a87788e7c8a57
     private static final String USER = "test";
     private static final String PASS = "1234qwer";
          

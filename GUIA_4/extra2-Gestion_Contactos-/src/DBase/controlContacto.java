@@ -4,7 +4,7 @@
  */
 package DBase;
 
-import javadb.DBCon;
+import DBase.DBCon;
 import Principal.Contacto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
